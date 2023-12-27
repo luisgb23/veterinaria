@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400&display=swap');
+*{
+    font-family: 'Lato', sans-serif;
+}
+body{
+    background-color: #86A789;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+}
+.titulo{
+    color: #7D7C7C;
+}
+
+.contenedor{
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.cabezal{
+    display: flex;
+    justify-content: space-between;
+}
