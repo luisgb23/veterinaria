@@ -17,7 +17,11 @@ if (!$consulta) {
     </div>
     <div class="card-body">
         <h5>Fecha de consulta:</h5>
-        <p><?php echo $consulta['ConsultaFecha'];?></p>
+        <p><?php
+            $fecha = $consulta['ConsultaFecha'];
+            $newFecha = date("d/m/Y", strtotime($fecha));
+            echo $newFecha?>
+        </p>
         <h5>Nombre de mascota:</h5>
         <p><?php echo $consulta['MascotaNombre'];?></p>
         <h5>Motivo:</h5>

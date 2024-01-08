@@ -31,7 +31,10 @@ $consultas = $resultado->fetch_all(MYSQLI_ASSOC);
                     ?>
                     <tr>
                         <td><?php echo $consulta['ConsultaId'];?></td>
-                        <td><?php echo $consulta['ConsultaFecha'];?></td>
+                        <td><?php
+                            $fecha = $consulta['ConsultaFecha'];
+                            $newFecha = date("d/m/Y", strtotime($fecha));
+                            echo $newFecha?></td>
                         <td><?php echo $consulta['MascotaNombre'];?></td>
                         <td><?php echo $consulta['ConsultaMotivo'];?></td>
                     <td>

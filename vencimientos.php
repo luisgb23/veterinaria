@@ -1,8 +1,8 @@
 <?php include ("templates/header.php");
 $mysqli = include_once "includes/conexion.php";
-$resultado = $mysqli->query("SELECT * FROM mascotas INNER JOIN Propietarios on mascotas.PropietarioId = propietarios.PropietarioId WHERE MascotaEstado = 1 order by MascotaFchVencVac desc");
+$resultado = $mysqli->query("SELECT * FROM mascotas INNER JOIN Propietarios on mascotas.PropietarioId = propietarios.PropietarioId WHERE MascotaEstado = 1 order by MascotaFchVencVac asc ");
 $mascotas = $resultado->fetch_all(MYSQLI_ASSOC);
-
+$hoy = date('d/m/Y');
 ?>
 <div class="card">
     <div class="card-header">
@@ -24,10 +24,22 @@ $mascotas = $resultado->fetch_all(MYSQLI_ASSOC);
                 foreach ($mascotas as $mascota){
                     ?>
                     <tr>
-                        <th><?php echo $mascota['MascotaNombre'];?></th>
-                        <th><?php echo $mascota['MascotaFchVencVac'];?></th>
-                        <th><?php echo $mascota['PropietarioNombre'];?> <?php echo $mascota['PropietarioApellido'];?></th>
-                        <th><?php echo $mascota['PropietarioTelefono'];?></th>
+                        <td><?php echo $mascota['MascotaNombre'];?></td>
+                        <?php
+                            $fecha = $mascota['MascotaFchVencVac'];
+                            $newFecha = date("d/m/Y", strtotime($fecha));
+                            if ($newFecha > $hoy){
+                                echo '<td>';
+                                echo '<span class="badge text-bg-danger">'.$newFecha." ".'(Vencidas)'.'</span>';
+                                echo '</td>';
+                        }else{
+                                 echo '<td>';
+                                 echo $newFecha;
+                                 echo '</td>';
+                            }
+                        ?>
+                        <td><?php echo $mascota['PropietarioNombre'];?> <?php echo $mascota['PropietarioApellido'];?></td>
+                        <td><?php echo $mascota['PropietarioTelefono'];?></td>
                     </tr>
                     <?php
                 }

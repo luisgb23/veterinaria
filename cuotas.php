@@ -31,7 +31,10 @@ $cuotas = $resultado->fetch_all(MYSQLI_ASSOC);
                     ?>
                     <tr>
                         <td><?php echo $cuota['CuotaId'];?></td>
-                        <td><?php echo $cuota['CuotaFecha'];?></td>
+                        <td><?php
+                            $fecha = $cuota['CuotaFecha'];
+                            $newFecha = date("d/m/Y", strtotime($fecha));
+                            echo $newFecha?></td>
                         <td><?php echo $cuota['MascotaNombre'];?></td>
                         <td>$ <?php echo $cuota['CuotaValor'];?></td>
                         <td><?php echo $cuota['CuotaObservacion'];?></td>

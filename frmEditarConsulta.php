@@ -31,12 +31,12 @@ if (!$consulta) {
                     <select class="form-select" name="txtMascotaId" id="mascota">
                         <?php
                         $mysqli = include './includes/conexion.php';
-                        $resultado = $mysqli->query("SELECT MascotaId, MascotaNombre FROM mascotas");
+                        $resultado = $mysqli->query("SELECT MascotaId, MascotaNombre,PropietarioNombre, PropietarioApellido FROM mascotas INNER JOIN Propietarios on mascotas.PropietarioId = Propietarios.PropietarioId");
                         while ($mascota = $resultado->fetch_assoc()){
                             if ($mascota['MascotaId'] == $consulta['MascotaId'])
-                                echo "<option value=\"$mascota[MascotaId]\" selected>$mascota[MascotaNombre]</option>";
+                                echo "<option value=\"$mascota[MascotaId]\" selected>$mascota[MascotaNombre] ($mascota[PropietarioNombre] $mascota[PropietarioApellido])</option>";
                             else
-                                echo "<option value=\"$mascota[MascotaId]\">$mascota[MascotaNombre]</option>";
+                                echo "<option value=\"$mascota[MascotaId]\">$mascota[MascotaNombre] ($mascota[PropietarioNombre] $mascota[PropietarioApellido]) </option>";
                         }
                         ?>
                     </select>

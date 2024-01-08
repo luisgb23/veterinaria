@@ -29,9 +29,17 @@ if (!isset($_SESSION['nombre'])) {
                 <a class="nav-link" href="../especies.php">Especies</a>
                 <a class="nav-link" href="../propietarios.php">Propietarios</a>
                 <a class="nav-link" href="../mascotas.php">Mascotas</a>
-                <a class="nav-link" href="../vencimientos.php">Vencimientos</a>
+                <a class="nav-link" href="../vacunas.php">Vacunas</a>
                 <a class="nav-link" href="../consultas.php">Consultas</a>
                 <a class="nav-link" href="../cuotas.php">Cuotas</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Listados
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="../vencimientos.php">Vencimiento de vacunas</a></li>
+                    </ul>
+                </li>
             </div>
         </nav>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

@@ -23,7 +23,7 @@
                     <div class="col-6">
                         <div class="mb-3">
                             <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="text" id="telefono" class="form-control" name="txtTelefono" required>
+                            <input type="text" id="telefono" class="form-control" name="txtTelefono">
                         </div>
                     </div>
                     <div class="col-6">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="direccion" class="form-label">Dirección</label>
-                    <input type="text" id="direccion" class="form-control" name="txtDireccion" required>
+                    <input type="text" id="direccion" class="form-control" name="txtDireccion">
                 </div>
                 <input type="submit" class="btn btn-success" value="Agregar">
                 <a href="propietarios.php" class="btn btn-danger">Cancelar</a>

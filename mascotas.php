@@ -23,6 +23,7 @@ $mascotas = $resultado->fetch_all(MYSQLI_ASSOC);
                         <th scope="col">Especie</th>
                         <th scope="col">Propietario</th>
                         <th scope="col">Fecha de nacimiento</th>
+                        <th scope="col">Edad</th>
                         <th scope="col">Acciones</th>
                     </tr>
                     </thead>
@@ -31,11 +32,22 @@ $mascotas = $resultado->fetch_all(MYSQLI_ASSOC);
                             foreach ($mascotas as $mascota){
                         ?>
                     <tr>
-                        <th><?php echo $mascota['MascotaId'];?></th>
+                        <td><?php echo $mascota['MascotaId'];?></td>
                         <td><?php echo $mascota['MascotaNombre'];?></td>
                         <td><?php echo $mascota['EspecieNombre'];?></td>
                         <td><?php echo $mascota['PropietarioNombre']." ".$mascota['PropietarioApellido'];?></td>
-                        <td><?php echo $mascota['MascotaFchNac'];?></td>
+                        <td><?php
+                            $fecha = $mascota['MascotaFchNac'];
+                            $newFecha = date("d/m/Y", strtotime($fecha));
+                            echo $newFecha ?>
+                        </td>
+                        <td>
+                            <?php
+                               require_once 'helpers/funciones.php';
+                               $resultado = obtenerEdad($fecha);
+                               echo $resultado;
+                            ?>
+                        </td>
                         <td>
                             <a href="frmEditarMascota.php?id=<?php echo $mascota['MascotaId'];?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Editar</a>
                             <a href="eliminarMascota.php?id=<?php echo $mascota['MascotaId'];?>" class="btn btn-danger btn-del"><i class="bi bi-trash3-fill"></i> Eliminar</a>

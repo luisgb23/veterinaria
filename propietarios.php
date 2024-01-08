@@ -32,12 +32,12 @@ $propietarios = $resultado->fetch_all(MYSQLI_ASSOC);
                     foreach ($propietarios as $propietario) {
                     ?>
                     <tr>
-                        <th><?php echo $propietario['PropietarioId'];?></th>
-                        <th><?php echo $propietario['PropietarioNombre'];?></th>
-                        <th><?php echo $propietario['PropietarioApellido'];?></th>
-                        <th><?php echo $propietario['PropietarioTelefono'];?></th>
-                        <th><?php echo $propietario['PropietarioDireccion'];?></th>
-                        <th><?php echo $propietario['PropietarioEmail'];?></th>
+                        <td><?php echo $propietario['PropietarioId'];?></td>
+                        <td><?php echo $propietario['PropietarioNombre'];?></td>
+                        <td><?php echo $propietario['PropietarioApellido'];?></td>
+                        <td><?php echo $propietario['PropietarioTelefono'];?></td>
+                        <td><?php echo $propietario['PropietarioDireccion'];?></td>
+                        <td><?php echo $propietario['PropietarioEmail'];?></td>
                         <td>
                             <a href="frmEditarPropietario.php?id=<?php echo $propietario['PropietarioId'];?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Editar</a>
                             <a href="eliminarPropietario.php?id=<?php echo $propietario['PropietarioId'];?>" class="btn btn-danger btn-del"><i class="bi bi-trash3-fill"></i> Eliminar</a>

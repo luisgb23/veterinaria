@@ -25,7 +25,11 @@ if (!$consulta) {
         <h1>Veterinaria Itapebi</h1>
         <h3>Resumen de historia clínica</h3>
         <hr>
-        <h2>Consulta de <?php echo $consulta['MascotaNombre'];?> el día: <?php echo $consulta['ConsultaFecha'];?></h2>
+        <?php
+        $fecha =  $consulta['ConsultaFecha'];
+        $newFecha = date("d/m/Y", strtotime($fecha));
+        ?>
+        <h2>Consulta de <?php echo $consulta['MascotaNombre'];?> el día: <?php echo $newFecha?></h2>
         <h5>Nombre de paciente:</h5>
         <p><?php echo $consulta['MascotaNombre'];?></p>
         <h5>Motivo de consulta:</h5>
