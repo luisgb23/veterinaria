@@ -1,4 +1,5 @@
 <?php include ("templates/header.php");?>
+<script src="js/funciones.js"></script>
 <div class="card">
     <div class="card-header">
         <h3 class="text-center">Nueva consulta</h3>

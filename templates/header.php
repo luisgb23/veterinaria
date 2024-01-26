@@ -37,7 +37,7 @@ if (!isset($_SESSION['nombre'])) {
                         Listados
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="../vencimientos.php">Vencimiento de vacunas</a></li>
+                        <li><a class="nav-link" href="../vencimientos.php">Historico de vacunas</a></li>
                     </ul>
                 </li>
             </div>

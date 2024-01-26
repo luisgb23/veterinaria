@@ -1,12 +1,12 @@
 <?php include ("templates/header.php");
 $mysqli = include_once "includes/conexion.php";
-$resultado = $mysqli->query("SELECT * FROM mascotas INNER JOIN Propietarios on mascotas.PropietarioId = propietarios.PropietarioId WHERE MascotaEstado = 1 order by MascotaFchVencVac asc ");
+$resultado = $mysqli->query("SELECT * FROM vacunas INNER JOIN mascotas on vacunas.MascotaId = mascotas.MascotaId inner join propietarios on mascotas.PropietarioId = Propietarios.PropietarioId ORDER BY Vacunas.VacunaFchVenc ASC");
 $mascotas = $resultado->fetch_all(MYSQLI_ASSOC);
-$hoy = date('d/m/Y');
+$hoy = date('Y-m-d');
 ?>
 <div class="card">
     <div class="card-header">
-        <h3 class="text-center">Vencimientos de vacunas por nombre y fecha</h3>
+        <h3 class="text-center">Historico de vencimiento de vacunas</h3>
     </div>
     <div class="card-body">
         <div class="responsive-table">
@@ -26,9 +26,9 @@ $hoy = date('d/m/Y');
                     <tr>
                         <td><?php echo $mascota['MascotaNombre'];?></td>
                         <?php
-                            $fecha = $mascota['MascotaFchVencVac'];
+                            $fecha = $mascota['VacunaFchVenc'];
                             $newFecha = date("d/m/Y", strtotime($fecha));
-                            if ($newFecha > $hoy){
+                            if ($fecha < $hoy) {
                                 echo '<td>';
                                 echo '<span class="badge text-bg-danger">'.$newFecha." ".'(Vencidas)'.'</span>';
                                 echo '</td>';

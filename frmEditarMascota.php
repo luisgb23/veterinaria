@@ -19,9 +19,19 @@ if (!$mascotas) {
     </div>
     <div class="card-body">
         <form action="editarMascota.php" method="post">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" id="nombre" class="form-control" name="txtNombre" value="<?php echo $mascotas['MascotaNombre'];?>" required>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" name="txtNombre" value="<?php echo $mascotas['MascotaNombre'];?>" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="fchnac" class="form-label">Fecha de nacimiento</label>
+                        <input type="date" id="fchnac" class="form-control" name="txtFechaNac" value="<?php echo $mascotas['MascotaFchNac'];?>" required>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-6">
@@ -57,20 +67,6 @@ if (!$mascotas) {
                             }
                             ?>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="fchnac" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" id="fchnac" class="form-control" name="txtFechaNac" value="<?php echo $mascotas['MascotaFchNac'];?>" required>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="fchvacunas" class="form-label">Fecha de vencimiento de vacunas</label>
-                        <input type="date" id="fchvacunas" class="form-control" name="txtFechaVac" value="<?php echo $mascotas['MascotaFchVencVac'];?>" required>
                     </div>
                 </div>
             </div>
