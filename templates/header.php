@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 if (!isset($_SESSION['nombre'])) {
     header('Location: index.php');
+    exit;
 }
 ?>
 <!doctype html>
@@ -44,7 +46,10 @@ if (!isset($_SESSION['nombre'])) {
             </div>
         </nav>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="./logout.php" class="btn btn-outline-success" type="submit"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
+            <form action="./logout.php" method="post">
+                <input type="hidden" name="_token" value="<?= App\Http\View::escape(App\Http\Csrf::token()) ?>">
+                <button class="btn btn-outline-success" type="submit">Cerrar sesión</button>
+            </form>
         </div>
     </div>
 </header>

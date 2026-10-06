@@ -1,13 +1,4 @@
 <?php
-
-if (!isset($_GET["id"])) {
-    exit("No hay id");
-}
-$mysqli = include_once "includes/conexion.php";
-$id = $_GET["id"];
-$sentencia = $mysqli->prepare("update especies set EspecieEstado = 0 where EspecieId = ?");
-$sentencia->bind_param("i", $id);
-$sentencia->execute();
-header("Location: especies.php");
-
-
+// Compatibility entry point during the MVC migration.
+$mvcRoute = 'especies.destroy';
+require __DIR__ . '/public/index.php';

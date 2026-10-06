@@ -1,22 +1,16 @@
 <?php
-
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use App\Controllers\MascotaController;
-
-$action = $_GET['action'] ?? 'index';
-
-switch ($action) {
-    case 'mascotas':
-        $controller = new MascotaController();
-        $controller->index();
-        break;
-    case 'agregarMascota':
-        $controller = new MascotaController();
-        $controller->create();
-        break;
-    default:
-        // Por ahora redirigir al index original o mostrar algo
-        header("Location: index.php");
-        break;
+declare(strict_types=1);
+require dirname(__DIR__) . '/config/bootstrap.php';
+$route = $mvcRoute ?? ($_GET['route'] ?? 'especies');
+try {
+    if (!is_string($route)) {
+        http_response_code(400);
+        echo 'Ruta inválida';
+    } else {
+        (new App\Http\Router(require dirname(__DIR__) . '/config/routes.php'))->dispatch($route, $_SERVER['REQUEST_METHOD']);
+    }
+} catch (Throwable $error) {
+    error_log((string) $error);
+    http_response_code(500);
+    echo 'No se pudo completar la operación';
 }
