@@ -1,0 +1,6 @@
+/nbproject/private/
+.DS_Store
+itapebi.sql
+db/itapebi_vacunas.sql
+db/itapebi_data.sql
+db/itapebi.sql

@@ -1,0 +1,11 @@
+<?php
+
+if (!isset($_GET["id"])) {
+    exit("No hay id");
+}
+$mysqli = include_once "includes/conexion.php";
+$id = $_GET["id"];
+$sentencia = $mysqli->prepare("update consultas set ConsultaEstado = 0 where ConsultaId = ?");
+$sentencia->bind_param("i", $id);
+$sentencia->execute();
+header("Location: consultas.php");
