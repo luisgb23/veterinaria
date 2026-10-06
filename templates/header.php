@@ -7,7 +7,7 @@ if (!isset($_SESSION['nombre'])) {
 }
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,40 +18,10 @@ if (!isset($_SESSION['nombre'])) {
     <link rel="shortcut icon" href="./img/logo.webp" type="image/x-icon">
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
-    <script src="../js/funciones.js"></script>
+    <script src="/js/funciones.js"></script>
+    <script src="/js/sidebar.js" defer></script>
 </head>
-<body class="fondo">
-<header class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="./dashboard.php">Veterinaria Itapebí</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <nav class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="./especies.php">Especies</a>
-                <a class="nav-link" href="./propietarios.php">Propietarios</a>
-                <a class="nav-link" href="./mascotas.php">Mascotas</a>
-                <a class="nav-link" href="./vacunas.php">Vacunas</a>
-                <a class="nav-link" href="./consultas.php">Consultas</a>
-                <a class="nav-link" href="./cuotas.php">Cuotas</a>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Listados
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="./vencimientos.php">Historico de vacunas</a></li>
-                    </ul>
-                </li>
-            </div>
-        </nav>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <form action="./logout.php" method="post">
-                <input type="hidden" name="_token" value="<?= App\Http\View::escape(App\Http\Csrf::token()) ?>">
-                <button class="btn btn-outline-success" type="submit">Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
-</header>
-<main class="container mt-4">
-    <h3 class="text-white">Bienvenid@ <?php echo $_SESSION['nombre'] ?></h3>
+<body class="fondo has-sidebar">
+<?php require __DIR__ . '/../views/partials/sidebar.php'; ?>
+<main class="app-main" id="main-content" tabindex="-1">
+    <h3 class="app-welcome">Bienvenid@ <?= App\Http\View::escape($_SESSION['nombre']) ?></h3>
