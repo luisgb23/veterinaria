@@ -62,3 +62,13 @@ Prueba de compatibilidad con vacunas antiguas (usa tablas temporales, sin cambia
 ```sh
 php tests/vacunas_legacy.php
 ```
+
+## PDF y versión de PHP
+
+Dompdf está actualizado a 3.1.6, junto con php-font-lib y php-svg-lib. Si usas una copia anterior y aparecen avisos Deprecated al abrir un PDF, actualizar también vendor o ejecutar `composer install` con el composer.lock actualizado. No editar archivos individuales dentro de vendor ni desactivar los avisos para corregir esta incompatibilidad.
+
+```sh
+php tests/pdf_smoke.php
+```
+
+Esta prueba activa E_ALL y convierte los avisos en excepciones antes de verificar el contenido PDF. Para diagnosticar extensiones faltantes: `composer check-platform-reqs`; para los adjuntos se necesita además fileinfo (`php -r "var_dump(class_exists('finfo'));"`).
