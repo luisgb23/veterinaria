@@ -72,3 +72,7 @@ php tests/pdf_smoke.php
 ```
 
 Esta prueba activa E_ALL y convierte los avisos en excepciones antes de verificar el contenido PDF. Para diagnosticar extensiones faltantes: `composer check-platform-reqs`; para los adjuntos se necesita además fileinfo (`php -r "var_dump(class_exists('finfo'));"`).
+
+## API para React
+
+La API REST está en `/api/v1` y convive con las pantallas PHP. [Guía de endpoints, sesión, CSRF, CORS y React](docs/API.md). Contrato [OpenAPI 3.0](docs/openapi.json) y [cliente JavaScript de ejemplo](docs/react-api-client.js). Validación compartida con MVC; ejecutar `tests/api_smoke.py` con el servidor iniciado con `public/dev-router.php`.

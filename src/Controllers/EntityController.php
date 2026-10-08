@@ -43,26 +43,9 @@ abstract class EntityController
     public function update(): void { if($row=$this->selected($_POST['txtId'] ?? null)) $this->save($row); }
     private function save(?array $row): void
     {
-        $values=[]; $errors=[]; $options=$this->options($row);
-        foreach($this->config['fields'] as $f) {
-            $raw=$_POST[$f['input']] ?? ''; $v=is_string($raw)?trim($raw):'';
-            $values[$f['column']]=$v===''?null:$v;
-            $invalid=(!is_string($raw)) || ($f['required'] && $v==='');
-            if($v!=='') {
-                if(in_array($f['type'],['text','email','textarea'],true) && mb_strlen($v)>$f['limit']) $invalid=true;
-                if($f['type']==='date') { $d=\DateTimeImmutable::createFromFormat('!Y-m-d',$v); $invalid=$invalid || !$d || $d->format('Y-m-d')!==$v; }
-                elseif($f['type']==='email') $invalid=$invalid || !filter_var($v,FILTER_VALIDATE_EMAIL);
-                elseif($f['type']==='number') $invalid=$invalid || !ctype_digit($v) || strlen($v)>18;
-                elseif($f['type']==='select') {
-                    $ids=array_column($options[$f['column']],$f['relation'][1].'Id');
-                    $invalid=$invalid || !ctype_digit($v) || !in_array((int)$v,$ids);
-                }
-                else $invalid=$invalid || mb_strlen($v)>$f['limit'];
-            }
-            if($invalid) $errors[$f['column']]='Revisa el campo '.$f['label'].'.';
-        }
-        if($this->entity==='vacunas' && !$errors && $values['VacunaFchVenc']<$values['VacunaFchIngreso']) $errors['VacunaFchVenc']='El vencimiento no puede ser anterior al ingreso.';
-        if($this->entity==='mascotas' && !$errors && $values['MascotaFchNac']>date('Y-m-d')) $errors['MascotaFchNac']='La fecha de nacimiento no puede ser futura.';
+        $input=[];
+        foreach($this->config['fields'] as $f) $input[$f['column']]=$_POST[$f['input']] ?? '';
+        [$values,$errors]=(new \App\Services\EntityValidator())->validate($this->entity,$this->config,$this->model,$input,$row);
         if($errors) { $this->form($row,$values,$errors,422); return; }
         $uploaded=[]; $files=new ArchivoService();
         try {

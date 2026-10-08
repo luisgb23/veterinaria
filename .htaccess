@@ -3,3 +3,5 @@ RewriteEngine On
 RewriteRule ^(?:storage|archivos|db|database|config|src|views|vendor|tests|includes|templates)(?:/|$) - [F,L,NC]
 RewriteRule (^|/)\. - [F,L]
 RewriteRule ^(?:conexion\.php|composer\.(?:json|lock)|README\.md|test(?:Agregar)?\.php)$ - [F,L,NC]
+
+RewriteRule ^api/v1(?:/.*)?$ public/api.php [QSA,L]
