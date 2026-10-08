@@ -43,7 +43,7 @@ final class EntityController
         }
         if($this->entity==='consultas') {
             $data['adjuntos']=[];
-            for($i=1;$i<=3;$i++) if(!empty($row['ConsultaArchivo'.$i])) $data['adjuntos'][]=['slot'=>$i,'url'=>'/api/v1/consultas/'.$data['id'].'/adjuntos/'.$i];
+            for($i=1;$i<=3;$i++) if(!empty($row['ConsultaArchivo'.$i])) $data['adjuntos'][]=['slot'=>$i,'url'=>\App\Http\Url::to('api/v1/consultas/'.$data['id'].'/adjuntos/'.$i)];
         }
         return $data;
     }
@@ -99,7 +99,7 @@ final class EntityController
         foreach($invalid as $column=>$message) $errors[array_search($column,$this->fields,true)]=[$message];
         if($errors) Response::error('Revisa los datos enviados.',422,$errors);
         $newId=$this->model->save($values,$id);
-        if(!$id) header('Location: /api/v1/'.$this->entity.'/'.$newId);
+        if(!$id) header('Location: '.\App\Http\Url::to('api/v1/'.$this->entity.'/'.$newId));
         Response::json(['data'=>$this->serialize($this->selected($newId))],$id?200:201);
     }
     public function delete(int $id): never { $this->selected($id); $this->model->delete($id); Response::empty(); }

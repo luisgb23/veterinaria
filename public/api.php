@@ -5,7 +5,9 @@ ini_set('display_errors','0'); ini_set('log_errors','1');
 try {
     require dirname(__DIR__).'/config/bootstrap.php';
     $path=parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH) ?: '';
-    $path=preg_replace('#^/api/v1/?#','',$path);
+    $prefix=App\Http\Url::to('api/v1');
+    if($path!==$prefix && !str_starts_with($path,$prefix.'/')) App\Http\ApiResponse::error('Endpoint no encontrado.',404);
+    $path=substr($path,strlen($prefix));
     (new App\Http\ApiRouter())->dispatch($path,$_SERVER['REQUEST_METHOD']);
 } catch(Throwable $error) {
     error_log((string)$error);

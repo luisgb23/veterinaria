@@ -11,7 +11,8 @@ final class ApiRouter
         if(!$origin) return;
         $scheme=(!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')?'https':'http';
         $same=$scheme.'://'.($_SERVER['HTTP_HOST'] ?? '');
-        $allowed=array_filter(array_map('trim',explode(',',getenv('CORS_ALLOWED_ORIGINS') ?: '')));
+        $origins=getenv('CORS_ALLOWED_ORIGINS');
+        $allowed=$origins===false?(\App\Config\Settings::all()['cors_allowed_origins'] ?? []):array_filter(array_map('trim',explode(',',$origins)));
         if($origin!==$same && !in_array($origin,$allowed,true)) ApiResponse::error('Origen no permitido.',403);
         if($origin!==$same) {
             header('Access-Control-Allow-Origin: '.$origin); header('Vary: Origin');

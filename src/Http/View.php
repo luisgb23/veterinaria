@@ -8,7 +8,7 @@ final class View
     }
     public static function url(string $route, array $params = []): string
     {
-        return '/public/index.php?' . http_build_query(['route' => $route] + $params);
+        return Url::to('public/index.php').'?' . http_build_query(['route' => $route] + $params);
     }
     public static function render(string $template, array $data = [], int $status = 200): void
     {

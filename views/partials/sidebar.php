@@ -4,7 +4,7 @@ use App\Http\Csrf;
 $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
 $currentRoute = $mvcRoute ?? ($_GET['route'] ?? '');
 $links = [
-    ['Inicio', '/dashboard.php', 'dashboard.php', null],
+    ['Inicio', App\Http\Url::to('dashboard.php'), 'dashboard.php', null],
     ['Especies', View::url('especies'), 'Especie', 'especies'],
     ['Propietarios', View::url('propietarios'), 'Propietario', 'propietarios'],
     ['Mascotas', View::url('mascotas'), 'Mascota', 'mascotas'],
@@ -18,7 +18,7 @@ $links = [
 <button class="sidebar-toggle" type="button" aria-controls="app-sidebar" aria-expanded="false"><span aria-hidden="true">☰</span> Menú</button>
 <button class="sidebar-backdrop" type="button" tabindex="-1" aria-label="Cerrar menú" hidden></button>
 <aside class="app-sidebar" id="app-sidebar" aria-label="Menú principal">
-    <a class="sidebar-brand" href="/dashboard.php"><img src="/img/logo.webp" alt="" width="48" height="48"><span>Veterinaria<small>Itapebí</small></span></a>
+    <a class="sidebar-brand" href="<?= App\Http\View::escape(App\Http\Url::to('dashboard.php')) ?>"><img src="<?= App\Http\View::escape(App\Http\Url::to('img/logo.webp')) ?>" alt="" width="48" height="48"><span>Veterinaria<small>Itapebí</small></span></a>
     <p class="sidebar-label">GESTIÓN</p>
     <nav class="sidebar-nav" aria-label="Accesos">
         <?php foreach ($links as [$label, $url, $match, $prefix]):

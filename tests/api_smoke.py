@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import secrets
 import subprocess
+import urllib.parse
 import urllib.request
 import urllib.error
 PHP=os.environ.get('PHP_BINARY','php')
@@ -36,7 +37,7 @@ try:
  assert call(guest,'no-existe')[0]==404
  assert call(guest,'especies/1','PUT')[0]==405
  assert call(guest,'auth/csrf',headers={'Origin':'https://untrusted.invalid'})[0]==403
- _,body,_=call(auth,'auth/csrf',headers={'Origin':BASE});csrf=body['data']['csrf_token']
+ _,body,_=call(auth,'auth/csrf',headers={'Origin':urllib.parse.urlsplit(BASE).scheme+'://'+urllib.parse.urlsplit(BASE).netloc});csrf=body['data']['csrf_token']
  assert call(auth,'auth/login','POST',{'usuario':marker,'password':password})[0]==403
  assert call(auth,'auth/login','POST',{'usuario':marker,'password':'wrong'},csrf)[0]==401
  assert call(auth,'auth/login','POST',csrf=csrf,raw=b'{',headers={'Content-Type':'application/json'})[0]==400

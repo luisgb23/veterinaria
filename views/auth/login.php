@@ -1,7 +1,7 @@
 <?php use App\Http\View; use App\Http\Csrf; ?>
 <section class="login-card" aria-labelledby="login-title">
     <div class="login-brand">
-        <img class="login-logo" src="/img/logo.webp" alt="" width="88" height="88">
+        <img class="login-logo" src="<?= App\Http\View::escape(App\Http\Url::to('img/logo.webp')) ?>" alt="" width="88" height="88">
         <p class="login-eyebrow">VETERINARIA ITAPEBÍ</p>
         <h1 id="login-title">Bienvenid@</h1>
         <p class="login-description">Ingresa para gestionar tu veterinaria.</p>

@@ -9,3 +9,5 @@ db/itapebi.sql
 /storage/pdf-cache/
 __pycache__/
 /vendor/dompdf/dompdf/lib/fonts/*.ufm.json
+
+/config/local.php

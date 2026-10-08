@@ -29,7 +29,7 @@ php database/migrate.php
 php -S 127.0.0.1:8080 -t . public/dev-router.php
 ```
 
-Mantener la raíz del proyecto como document root durante la transición de assets. El router de desarrollo bloquea acceso HTTP a configuración, SQL, dependencias, adjuntos y directorios internos. En Apache, `.htaccess` requiere mod_rewrite y AllowOverride apropiado. En Nginx configurar bloqueos equivalentes antes de publicar. No arrancar el servidor de desarrollo sin el router: PHP no aplica `.htaccess`.
+Se puede servir la raíz del proyecto o colocar la carpeta completa dentro de htdocs/veterinaria. Las URLs detectan automáticamente el prefijo /veterinaria. El router de desarrollo bloquea acceso HTTP a configuración, SQL, dependencias, adjuntos y directorios internos. En Apache, `.htaccess` requiere mod_rewrite y AllowOverride apropiado. En Nginx configurar bloqueos equivalentes antes de publicar. No arrancar el servidor de desarrollo sin el router: PHP no aplica `.htaccess`.
 
 En el entorno cloud preparado:
 
@@ -76,3 +76,7 @@ Esta prueba activa E_ALL y convierte los avisos en excepciones antes de verifica
 ## API para React
 
 La API REST está en `/api/v1` y convive con las pantallas PHP. [Guía de endpoints, sesión, CSRF, CORS y React](docs/API.md). Contrato [OpenAPI 3.0](docs/openapi.json) y [cliente JavaScript de ejemplo](docs/react-api-client.js). Validación compartida con MVC; ejecutar `tests/api_smoke.py` con el servidor iniciado con `public/dev-router.php`.
+
+## MAMP y subcarpetas
+
+[Instalación completa en htdocs/veterinaria](docs/MAMP.md). Copiar config/local.example.php a config/local.php y ajustar los datos reales de MySQL. No se requieren cambios en la lógica del proyecto. `APP_BASE_PATH` permite sobrescribir la detección de rutas cuando se usan aliases.

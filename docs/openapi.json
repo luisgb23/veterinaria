@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "/api/v1"
+      "url": "/veterinaria/api/v1",
+      "description": "MAMP htdocs/veterinaria"
+    },
+    {
+      "url": "/api/v1",
+      "description": "Domain root"
     }
   ],
   "security": [

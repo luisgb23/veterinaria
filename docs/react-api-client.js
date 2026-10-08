@@ -1,5 +1,5 @@
 // Example for React/Vite. Prefer a same-origin /api proxy.
-const API_BASE = '/api/v1';
+const API_BASE = '/veterinaria/api/v1'; // Use '/api/v1' when deployed at the domain root.
 let csrfToken = null;
 
 export async function apiRequest(path, { method = 'GET', body } = {}) {

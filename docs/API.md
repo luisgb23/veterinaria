@@ -1,6 +1,6 @@
 # API v1 para React
 
-Base: `/api/v1`. Contrato OpenAPI 3.0: `docs/openapi.json` (importable en Swagger Editor/Postman). El frontend React no está incluido: esta entrega prepara el backend.
+Base: `/api/v1` en la raíz, `/veterinaria/api/v1` en MAMP con htdocs/veterinaria. Contrato OpenAPI 3.0: `docs/openapi.json` (importable en Swagger Editor/Postman). El frontend React no está incluido: esta entrega prepara el backend.
 
 ## Arranque
 
@@ -104,3 +104,5 @@ PHP_BINARY=php MVC_BASE_URL=http://localhost:8000 python3 tests/api_smoke.py
 ```
 
 Ejecutar sobre una base de desarrollo. Crea usuario y registros aislados, comprueba las seis entidades, login/CSRF, JSON/errores, filtros/paginación, PDF, upload/download/delete de archivos y bajas; elimina sus fixtures al finalizar. Las pruebas MVC originales siguen disponibles en `tests/entities_smoke.py`.
+
+Para MAMP, ver [la guía de instalación](MAMP.md). Las respuestas Location y URLs de adjuntos incorporan el prefijo de instalación. El cliente JavaScript de ejemplo usa `/veterinaria/api/v1`; cambiar API_BASE si usas un virtual host en la raíz.
