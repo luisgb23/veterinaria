@@ -112,3 +112,6 @@ body.login-page {
     .login-main { padding: 20px 16px; }
     .login-card { padding: 28px 24px; border-radius: 20px; }
 }
+.entity-form { max-width: 760px; }
+.entity-actions { display: flex; flex-wrap: wrap; gap: 8px; min-width: 180px; }
+.entity-actions form { margin: 0; }

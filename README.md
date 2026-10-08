@@ -1,53 +1,58 @@
-# Veterinaria Itapebí
+# Veterinaria Itapebí — MVC
 
-Aplicación PHP en migración gradual a MVC. Requiere PHP 8.1 o superior, MySQL/MariaDB y las extensiones mysqli, mbstring, dom e iconv. Composer ya configura `App\` → `src/`; no fue necesario regenerar el autoload versionado.
+Aplicación PHP con autenticación, inicio, especies, propietarios, mascotas, cuotas, consultas, vacunas e histórico migrados a MVC. Conserva la navegación lateral y el login responsive. Requiere PHP 8.1+, mysqli, mbstring, fileinfo, dom, iconv y MySQL/MariaDB. Dompdf y el autoload PSR-4 están incluidos en vendor.
 
-## Estado de la migración
+## Estructura
 
-Autenticación y especies usan controladores, modelos y vistas. Los archivos PHP originales de estos módulos delegan al punto de entrada MVC. Propietarios, mascotas, consultas, cuotas y vacunas mantienen su implementación anterior. No se migraron adjuntos ni PDF en esta etapa.
-
-- `public/index.php`: punto de entrada MVC; selecciona rutas mediante `?route=especies`.
-- `config/`: inicialización, rutas y conexión.
-- `src/Controllers/`: peticiones, validación y respuestas.
+- `public/index.php`: punto de entrada; rutas explícitas en `config/routes.php`.
+- `config/entities.php`: campos, relaciones y validaciones de cada módulo; identificadores SQL solo desde esta configuración.
+- `src/Controllers/`: controlador por entidad y comportamiento CRUD compartido.
 - `src/Models/`: conexión y consultas preparadas.
-- `src/Http/`: router, autenticación, CSRF y renderizado.
-- `views/`: HTML; valores dinámicos escapados con `View::escape()`.
-- `tests/mvc_smoke.py`: pruebas HTTP y persistencia con fixtures temporales.
+- `src/Services/`: almacenamiento de adjuntos y generación de PDF.
+- `src/Http/`: router, autenticación, CSRF, renderizado.
+- `views/`: vistas compartidas, login, navegación, formularios, detalles, listados y PDF.
+- `database/migrations/`: cambios de esquema aditivos.
+- `tests/`: pruebas HTTP con fixtures aislados que se eliminan al finalizar.
 
-Las rutas aceptan un método explícito. Altas, cambios, bajas y logout usan POST con token CSRF. La eliminación de especies conserva la baja lógica (`EspecieEstado=0`). Los enlaces antiguos de eliminación mediante GET devuelven 405. El login verifica usuarios activos, regenera la sesión y actualiza contraseñas SHA-1 a bcrypt tras una autenticación correcta. Todas las entradas de login del proyecto delegan al nuevo controlador.
+Los archivos PHP originales delegan a rutas MVC para preservar las URLs. Las escrituras y el logout son POST con CSRF; las eliminaciones conservan la baja lógica. Las relaciones nuevas deben existir y estar activas; una relación ya inactiva se puede conservar al editar. Las contraseñas SHA-1 se actualizan a bcrypt al iniciar sesión correctamente. No se crean usuarios o contraseñas permanentes automáticamente.
 
-## Desarrollo
+## Preparación y ejecución
 
-Durante la transición, servir la raíz del checkout para que las pantallas heredadas sigan accesibles:
+Exportar `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, opcionalmente `DB_PORT` y `DB_SOCKET`. Por defecto se mantiene localhost/root/itapebi para desarrollo local. No guardar credenciales en Git. La zona horaria es America/Montevideo.
+
+La base existente debe tener especies, propietarios, mascotas, cuotas, consultas y usuario. El volcado original tiene fechas inválidas y una referencia a usuarios en vez de usuario; no se carga automáticamente. Usar un esquema y datos de desarrollo válidos.
+
+La tabla vacunas faltaba: la migración reconstruye los campos utilizados por el código anterior, añade timestamps y una relación con mascotas. No sustituye tablas existentes ni sobrescribe datos; si ya existe una tabla vacunas, comprobar que tiene estos campos antes de usarla. Ejecutar explícitamente:
 
 ```sh
-cd /workspace/veterinaria
-php -S 127.0.0.1:8080 -t .
+php database/migrate.php
+php -S 127.0.0.1:8080 -t . public/dev-router.php
 ```
 
-La pantalla de entrada está en `/index.php`; las rutas MVC en `/public/index.php?route=especies`. Las URLs actuales asumen instalación en la raíz del dominio. Este servidor es para desarrollo local. Cambiar el document root únicamente a `public/` requiere migrar las pantallas restantes, los enlaces y los recursos estáticos; todavía no es compatible con el proyecto completo.
+Mantener la raíz del proyecto como document root durante la transición de assets. El router de desarrollo bloquea acceso HTTP a configuración, SQL, dependencias, adjuntos y directorios internos. En Apache, `.htaccess` requiere mod_rewrite y AllowOverride apropiado. En Nginx configurar bloqueos equivalentes antes de publicar. No arrancar el servidor de desarrollo sin el router: PHP no aplica `.htaccess`.
 
 En el entorno cloud preparado:
 
 ```sh
+/workspace/.veterinaria-env/bin/php database/migrate.php
 bash /workspace/.veterinaria-env/start.sh
-PHP_BINARY=/workspace/.veterinaria-env/bin/php python3 tests/mvc_smoke.py
+PHP_BINARY=/workspace/.veterinaria-env/bin/php python3 tests/entities_smoke.py
 ```
 
-Para otros entornos, exportar `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, y opcionalmente `DB_PORT` y `DB_SOCKET` antes de arrancar PHP. Los valores por defecto conservan localhost, root e itapebi para desarrollo local. No guardar contraseñas en el repositorio. Las pantallas heredadas todavía usan `includes/conexion.php`, de modo que los overrides de la conexión MVC no se aplican a ellas. `config/bootstrap.php` inicializa sesión y zona horaria America/Montevideo.
+## Adjuntos y PDF
 
-## Validación
+Las consultas admiten tres archivos opcionales PDF/JPG/PNG de hasta 5 MB cada uno, con validación del MIME real y nombres aleatorios. Se guardan en `storage/uploads/` (ignorado por Git). Un formulario sin archivo mantiene el adjunto existente. Reemplazar un archivo conserva el anterior en almacenamiento; no se purga automáticamente para evitar pérdidas. Los archivos antiguos de `archivos/` siguen disponibles mediante la descarga autenticada. Respaldar ambos directorios junto con la base de datos.
 
-Con una base de desarrollo disponible y el servidor iniciado:
+Las descargas requieren sesión, una consulta activa y un slot válido. Los PDF se renderizan con vistas escapadas, sin recursos remotos. La carpeta de uploads debe ser escribible por PHP. Ajustar `upload_max_filesize` y `post_max_size` para admitir los archivos necesarios; usar `post_max_size` superior al total de los tres adjuntos.
+
+## Pruebas
+
+Con servidor y base de desarrollo disponibles:
 
 ```sh
-PHP_BINARY=php MVC_BASE_URL=http://127.0.0.1:8080 python3 tests/mvc_smoke.py
+PHP_BINARY=php MVC_BASE_URL=http://127.0.0.1:8080 python3 tests/entities_smoke.py
 ```
 
-El test crea un usuario y una especie con nombres únicos, verifica autenticación, migración de contraseña, métodos HTTP, CSRF, errores de validación, escape de HTML, alta/edición/baja lógica y compatibilidad. Elimina sus fixtures incluso ante una aserción fallida. Ejecutarlo contra una base de desarrollo donde se permitan estas escrituras, no producción.
+Ejecuta también la suite inicial de autenticación y especies. Comprueba CRUD de todas las entidades, validación de fechas/importes/relaciones, métodos y CSRF, escape HTML, bajas lógicas, migración de contraseña, URLs originales, histórico, PDF, conservación y descarga de adjuntos y rechazo de archivos ejecutables. Crea y elimina fixtures; requiere permiso de escritura y no debe ejecutarse contra producción.
 
-## Pendientes
-
-El SQL versionado tiene fechas inválidas y referencias a `usuarios` aunque crea `usuario`. No incluye la tabla `vacunas`. El entorno cloud tiene solo el esquema disponible, sin usuario permanente. Se necesita un usuario de desarrollo válido para entrar manualmente; las pruebas generan uno temporal. Estos problemas no se corrigen inventando tablas o datos en la migración MVC.
-
-Continuar migrando propietarios y mascotas antes de consultas. Añadir servicios reales de adjuntos y PDF cuando se migren esos flujos; no se agregaron clases vacías. Separar esquema y seeds válidos, recuperar vacunas y completar la migración de recursos a `public/`. Las acciones heredadas de los módulos pendientes aún requieren aplicar los controles de autenticación, CSRF y validación del nuevo router.
+Los helpers `test.php` y `testAgregar.php` son demostraciones heredadas, no forman parte del flujo MVC ni de la suite; no deben desplegarse públicamente. Usuarios se administran fuera de estas pantallas; la autenticación está migrada, pero no se añadió una pantalla de administración de cuentas.

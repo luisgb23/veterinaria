@@ -6,12 +6,12 @@ $currentRoute = $mvcRoute ?? ($_GET['route'] ?? '');
 $links = [
     ['Inicio', '/dashboard.php', 'dashboard.php', null],
     ['Especies', View::url('especies'), 'Especie', 'especies'],
-    ['Propietarios', '/propietarios.php', 'Propietario', null],
-    ['Mascotas', '/mascotas.php', 'Mascota', null],
-    ['Vacunas', '/vacunas.php', 'Vacuna', null],
-    ['Consultas', '/consultas.php', 'Consulta', null],
-    ['Cuotas', '/cuotas.php', 'Cuota', null],
-    ['Histórico de vacunas', '/vencimientos.php', 'vencimientos.php', null],
+    ['Propietarios', View::url('propietarios'), 'Propietario', 'propietarios'],
+    ['Mascotas', View::url('mascotas'), 'Mascota', 'mascotas'],
+    ['Vacunas', View::url('vacunas'), 'Vacuna', 'vacunas'],
+    ['Consultas', View::url('consultas'), 'Consulta', 'consultas'],
+    ['Cuotas', View::url('cuotas'), 'Cuota', 'cuotas'],
+    ['Histórico de vacunas', View::url('vencimientos'), 'vencimientos.php', 'vencimientos'],
 ];
 ?>
 <a class="skip-link" href="#main-content">Ir al contenido</a>

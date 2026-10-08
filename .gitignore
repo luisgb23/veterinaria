@@ -4,3 +4,8 @@ itapebi.sql
 db/itapebi_vacunas.sql
 db/itapebi_data.sql
 db/itapebi.sql
+/storage/uploads/
+/storage/logs/
+/storage/pdf-cache/
+__pycache__/
+/vendor/dompdf/dompdf/lib/fonts/*.ufm.json
