@@ -6,6 +6,15 @@ final class Entity
     public function __construct(private \mysqli $db, private string $table, private array $config) {}
     private function id(): string { return $this->config['prefix'] . 'Id'; }
     private function state(): string { return $this->config['prefix'] . 'Estado'; }
+    private ?array $columns = null;
+    private function hasTimestamp(string $column): bool
+    {
+        // The original vaccine insert did not require creation timestamps.
+        // Existing installations may also omit modification timestamps.
+        if ($this->table !== 'vacunas') return true;
+        $this->columns ??= array_column($this->db->query('SHOW COLUMNS FROM vacunas')->fetch_all(MYSQLI_ASSOC), 'Field');
+        return in_array($column, $this->columns, true);
+    }
     public function all(): array
     {
         return $this->db->query("SELECT * FROM {$this->table} WHERE {$this->state()}=1 ORDER BY {$this->id()} DESC")->fetch_all(MYSQLI_ASSOC);
@@ -28,12 +37,17 @@ final class Entity
         if ($id) {
             $sets=implode(', ',array_map(fn($c)=>"$c=?",$columns));
             $timestamp=$this->config['prefix'].'FchModificacion';
-            $s=$this->db->prepare("UPDATE {$this->table} SET $sets, $timestamp=NOW() WHERE {$this->id()}=? AND {$this->state()}=1");
+            $timestampSql=$this->hasTimestamp($timestamp) ? ", $timestamp=NOW()" : "";
+            $s=$this->db->prepare("UPDATE {$this->table} SET $sets$timestampSql WHERE {$this->id()}=? AND {$this->state()}=1");
             $args[]=$id;
         } else {
-            $columns[]=$this->config['prefix'].'FchCreacion'; $columns[]=$this->state();
+            $timestamp=$this->config['prefix'].'FchCreacion';
+            $hasTimestamp=$this->hasTimestamp($timestamp);
+            if($hasTimestamp) $columns[]=$timestamp;
+            $columns[]=$this->state();
             $sqlColumns=implode(', ',$columns); $marks=implode(', ',array_fill(0,count($values),'?'));
-            $s=$this->db->prepare("INSERT INTO {$this->table} ($sqlColumns) VALUES ($marks, NOW(), 1)");
+            $timestampSql=$hasTimestamp ? ", NOW()" : "";
+            $s=$this->db->prepare("INSERT INTO {$this->table} ($sqlColumns) VALUES ($marks$timestampSql, 1)");
         }
         $s->execute($args); return $id ?? (int)$this->db->insert_id;
     }

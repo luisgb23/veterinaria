@@ -22,7 +22,7 @@ Exportar `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, opcionalmente `DB_PORT`
 
 La base existente debe tener especies, propietarios, mascotas, cuotas, consultas y usuario. El volcado original tiene fechas inválidas y una referencia a usuarios en vez de usuario; no se carga automáticamente. Usar un esquema y datos de desarrollo válidos.
 
-La tabla vacunas faltaba: la migración reconstruye los campos utilizados por el código anterior, añade timestamps y una relación con mascotas. No sustituye tablas existentes ni sobrescribe datos; si ya existe una tabla vacunas, comprobar que tiene estos campos antes de usarla. Ejecutar explícitamente:
+La tabla vacunas faltaba: la migración reconstruye los campos utilizados por el código anterior, añade timestamps y una relación con mascotas. No sustituye tablas existentes ni sobrescribe datos; si ya existe una tabla vacunas, conserva su esquema y datos. El modelo admite tablas antiguas sin VacunaFchCreacion o VacunaFchModificacion; los campos de ingreso, vencimiento, mascota, identificador y estado siguen siendo necesarios. Ejecutar explícitamente:
 
 ```sh
 php database/migrate.php
@@ -56,3 +56,9 @@ PHP_BINARY=php MVC_BASE_URL=http://127.0.0.1:8080 python3 tests/entities_smoke.p
 Ejecuta también la suite inicial de autenticación y especies. Comprueba CRUD de todas las entidades, validación de fechas/importes/relaciones, métodos y CSRF, escape HTML, bajas lógicas, migración de contraseña, URLs originales, histórico, PDF, conservación y descarga de adjuntos y rechazo de archivos ejecutables. Crea y elimina fixtures; requiere permiso de escritura y no debe ejecutarse contra producción.
 
 Los helpers `test.php` y `testAgregar.php` son demostraciones heredadas, no forman parte del flujo MVC ni de la suite; no deben desplegarse públicamente. Usuarios se administran fuera de estas pantallas; la autenticación está migrada, pero no se añadió una pantalla de administración de cuentas.
+
+Prueba de compatibilidad con vacunas antiguas (usa tablas temporales, sin cambiar los datos existentes):
+
+```sh
+php tests/vacunas_legacy.php
+```
